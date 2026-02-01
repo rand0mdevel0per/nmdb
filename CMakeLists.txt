@@ -27,6 +27,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 set(PROTO_FILES
     proto/channel.proto
     proto/message.proto
+    proto/nmdb_channel_config.proto
 )
 
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
@@ -35,6 +36,7 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
 set(NMDB_SOURCES
     src/socket_server.cpp
     src/channel_manager.cpp
+    src/nmdb_channel_manager.cpp
     ${PROTO_SRCS}
 )
 
@@ -43,6 +45,7 @@ set(NMDB_HEADERS
     include/nmdb/socket_server.hpp
     include/nmdb/channel_manager.hpp
     include/nmdb/message_utils.hpp
+    include/nmdb/nmdb_channel_manager.h
     ${PROTO_HDRS}
 )
 

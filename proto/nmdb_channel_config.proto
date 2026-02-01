@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package nmdb;
+
+import "channel.proto";
+
+// NMDB Channel Configuration
+// Supports separation between main and peripheral channels
+message NMDBChannelConfig {
+  // Main channel configuration (for neuron state, KFE storage, model parameters)
+  message MainChannelConfig {
+    string database_path = 1;           // Main database path
+    uint64 max_size_mb = 2;             // Maximum database size in MB
+    bool enable_compression = 3;        // Enable data compression
+    uint32 cache_size_mb = 4;           // Cache size in MB
+  }
+
+  // Peripheral channel configuration (for text/image/audio external components)
+  message PeripheralChannelConfig {
+    string channel_name = 1;            // Channel name (e.g., "text", "image", "audio")
+    ChannelType channel_type = 2;       // Channel type from channel.proto
+    string database_path = 3;           // Separate database path for this channel
+    uint64 max_size_mb = 4;             // Maximum database size in MB
+    bool enable_compression = 5;        // Enable data compression
+    uint32 cache_size_mb = 6;           // Cache size in MB
+  }
+
+  // Main channel configuration
+  MainChannelConfig main_channel = 1;
+
+  // Peripheral channels (completely isolated from main channel)
+  repeated PeripheralChannelConfig peripheral_channels = 2;
+
+  // Global settings
+  bool enable_wal = 3;                  // Enable Write-Ahead Logging
+  uint32 sync_interval_ms = 4;          // Sync interval in milliseconds
+}
