@@ -22,12 +22,12 @@ public:
     /**
      * @brief Store data in this channel
      */
-    bool store(const std::string& key, const sintellix::CICData& data);
+    bool store(const std::string& key, const CICData& data);
 
     /**
      * @brief Load data from this channel
      */
-    bool load(const std::string& key, sintellix::CICData& data);
+    bool load(const std::string& key, CICData& data);
 
     /**
      * @brief Delete data from this channel
@@ -58,12 +58,12 @@ public:
     /**
      * @brief Store data in main channel
      */
-    bool store_main(const std::string& key, const sintellix::CICData& data);
+    bool store_main(const std::string& key, const CICData& data);
 
     /**
      * @brief Load data from main channel
      */
-    bool load_main(const std::string& key, sintellix::CICData& data);
+    bool load_main(const std::string& key, CICData& data);
 
     /**
      * @brief Store data in peripheral channel
@@ -71,7 +71,7 @@ public:
     bool store_peripheral(
         const std::string& channel_name,
         const std::string& key,
-        const sintellix::CICData& data
+        const CICData& data
     );
 
     /**
@@ -80,7 +80,7 @@ public:
     bool load_peripheral(
         const std::string& channel_name,
         const std::string& key,
-        sintellix::CICData& data
+        CICData& data
     );
 
     /**

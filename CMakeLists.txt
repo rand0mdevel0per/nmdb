@@ -28,6 +28,7 @@ set(PROTO_FILES
     proto/channel.proto
     proto/message.proto
     proto/nmdb_channel_config.proto
+    proto/cic_data.proto
 )
 
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})

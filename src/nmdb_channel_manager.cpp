@@ -17,7 +17,7 @@ public:
         std::filesystem::create_directories(path.parent_path());
     }
 
-    bool store(const std::string& key, const sintellix::CICData& data) {
+    bool store(const std::string& key, const CICData& data) {
         std::string file_path = get_file_path(key);
 
         std::ofstream ofs(file_path, std::ios::binary);
@@ -34,7 +34,7 @@ public:
         return ofs.good();
     }
 
-    bool load(const std::string& key, sintellix::CICData& data) {
+    bool load(const std::string& key, CICData& data) {
         std::string file_path = get_file_path(key);
 
         std::ifstream ifs(file_path, std::ios::binary);
@@ -78,11 +78,11 @@ NMDBChannel::NMDBChannel(const std::string& db_path)
 
 NMDBChannel::~NMDBChannel() = default;
 
-bool NMDBChannel::store(const std::string& key, const sintellix::CICData& data) {
+bool NMDBChannel::store(const std::string& key, const CICData& data) {
     return impl_->store(key, data);
 }
 
-bool NMDBChannel::load(const std::string& key, sintellix::CICData& data) {
+bool NMDBChannel::load(const std::string& key, CICData& data) {
     return impl_->load(key, data);
 }
 
@@ -115,7 +115,7 @@ NMDBChannelManager::~NMDBChannelManager() = default;
 
 bool NMDBChannelManager::store_main(
     const std::string& key,
-    const sintellix::CICData& data
+    const CICData& data
 ) {
     std::lock_guard<std::mutex> lock(mutex_);
     return main_channel_->store(key, data);
@@ -123,7 +123,7 @@ bool NMDBChannelManager::store_main(
 
 bool NMDBChannelManager::load_main(
     const std::string& key,
-    sintellix::CICData& data
+    CICData& data
 ) {
     std::lock_guard<std::mutex> lock(mutex_);
     return main_channel_->load(key, data);
@@ -132,7 +132,7 @@ bool NMDBChannelManager::load_main(
 bool NMDBChannelManager::store_peripheral(
     const std::string& channel_name,
     const std::string& key,
-    const sintellix::CICData& data
+    const CICData& data
 ) {
     std::lock_guard<std::mutex> lock(mutex_);
 
@@ -147,7 +147,7 @@ bool NMDBChannelManager::store_peripheral(
 bool NMDBChannelManager::load_peripheral(
     const std::string& channel_name,
     const std::string& key,
-    sintellix::CICData& data
+    CICData& data
 ) {
     std::lock_guard<std::mutex> lock(mutex_);
 
