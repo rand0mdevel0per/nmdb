@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package nmdb;
+
+import "channel.proto";
+
+// Main message structure for NMDB communication
+message NMDBMessage {
+  MessageHeader header = 1;        // Message header with routing info
+  MessagePayload payload = 2;      // Message payload
+  GenerationParams params = 3;     // Generation parameters (temperature, etc.)
+  repeated NMDBMessage nested = 4; // Channel-in-channel (CIC) support
+}
+
+// Message header with routing and metadata
+message MessageHeader {
+  string message_id = 1;           // Unique message identifier
+  string source_channel = 2;       // Source channel ID
+  string target_channel = 3;       // Target channel ID (for routing)
+  int64 timestamp = 4;             // Message timestamp (microseconds)
+  int64 sequence_number = 5;       // Sequence number for ordering
+  MessageType type = 6;            // Message type
+  map<string, string> metadata = 7; // Additional metadata
+}
+
+// Message types
+enum MessageType {
+  MESSAGE_TYPE_UNSPECIFIED = 0;
+  MESSAGE_TYPE_REQUEST = 1;        // Request message
+  MESSAGE_TYPE_RESPONSE = 2;       // Response message
+  MESSAGE_TYPE_STREAM = 3;         // Streaming message
+  MESSAGE_TYPE_CONTROL = 4;        // Control message
+  MESSAGE_TYPE_ERROR = 5;          // Error message
+}
+
+// Message payload supporting multi-modal data
+message MessagePayload {
+  oneof data {
+    TextData text = 1;             // Text data
+    ImageData image = 2;           // Image data
+    AudioData audio = 3;           // Audio data
+    CustomData custom = 4;         // Custom binary data
+  }
+}
+
+// Text data
+message TextData {
+  string content = 1;              // Text content
+  string encoding = 2;             // Encoding (e.g., "utf-8")
+  string language = 3;             // Language code (e.g., "en", "zh")
+}
+
+// Image data
+message ImageData {
+  bytes data = 1;                  // Image binary data
+  string format = 2;               // Image format (e.g., "png", "jpeg")
+  int32 width = 3;                 // Image width
+  int32 height = 4;                // Image height
+  string encoding = 5;             // Encoding (e.g., "base64", "raw")
+}
+
+// Audio data
+message AudioData {
+  bytes data = 1;                  // Audio binary data
+  string format = 2;               // Audio format (e.g., "wav", "mp3")
+  int32 sample_rate = 3;           // Sample rate (Hz)
+  int32 channels = 4;              // Number of channels
+  int32 bit_depth = 5;             // Bit depth
+}
+
+// Custom binary data
+message CustomData {
+  bytes data = 1;                  // Binary data
+  string mime_type = 2;            // MIME type
+  map<string, string> metadata = 3; // Additional metadata
+}
+
+// Generation parameters (OpenAI-compatible)
+message GenerationParams {
+  float temperature = 1;           // Sampling temperature (0.0-2.0)
+  float top_p = 2;                 // Nucleus sampling threshold
+  int32 max_tokens = 3;            // Maximum tokens to generate
+  float frequency_penalty = 4;     // Frequency penalty (-2.0 to 2.0)
+  float presence_penalty = 5;      // Presence penalty (-2.0 to 2.0)
+  repeated string stop = 6;        // Stop sequences
+  int32 n = 7;                     // Number of completions
+  bool stream = 8;                 // Enable streaming
+  int64 seed = 9;                  // Random seed for reproducibility
+  map<string, float> logit_bias = 10; // Logit bias adjustments
+}
+
+// Error message
+message ErrorMessage {
+  string code = 1;                 // Error code
+  string message = 2;              // Error message
+  string details = 3;              // Detailed error information
+  int64 timestamp = 4;             // Error timestamp
+}

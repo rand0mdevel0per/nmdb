@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package nmdb;
+
+// Channel metadata and configuration
+message ChannelMetadata {
+  string channel_id = 1;           // Unique channel identifier (e.g., "c1", "c2")
+  string socket_path = 2;          // Unix socket path (e.g., "c1.sock")
+  ChannelType type = 3;            // Channel type
+  ChannelMode mode = 4;            // Synchronous or asynchronous
+  int32 max_queue_size = 5;        // Maximum message queue size
+  int64 created_timestamp = 6;     // Channel creation timestamp
+  map<string, string> metadata = 7; // Additional metadata
+}
+
+// Channel types for different modalities
+enum ChannelType {
+  CHANNEL_TYPE_UNSPECIFIED = 0;
+  CHANNEL_TYPE_TEXT = 1;           // Text generation
+  CHANNEL_TYPE_TTS = 2;            // Text-to-speech
+  CHANNEL_TYPE_IMAGE = 3;          // Image generation
+  CHANNEL_TYPE_AUDIO = 4;          // Audio generation
+  CHANNEL_TYPE_CUSTOM = 5;         // Custom data type
+  CHANNEL_TYPE_CONTROL = 6;        // Control messages
+}
+
+// Channel operation mode
+enum ChannelMode {
+  CHANNEL_MODE_UNSPECIFIED = 0;
+  CHANNEL_MODE_SYNC = 1;           // Synchronous (blocking)
+  CHANNEL_MODE_ASYNC = 2;          // Asynchronous (non-blocking)
+}
+
+// Channel control messages
+message ChannelControl {
+  ControlAction action = 1;
+  string channel_id = 2;
+  ChannelMetadata metadata = 3;
+}
+
+enum ControlAction {
+  CONTROL_ACTION_UNSPECIFIED = 0;
+  CONTROL_ACTION_CREATE = 1;       // Create new channel
+  CONTROL_ACTION_DESTROY = 2;      // Destroy channel
+  CONTROL_ACTION_PAUSE = 3;        // Pause channel
+  CONTROL_ACTION_RESUME = 4;       // Resume channel
+  CONTROL_ACTION_QUERY = 5;        // Query channel status
+}
