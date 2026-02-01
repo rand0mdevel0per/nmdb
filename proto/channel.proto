@@ -22,6 +22,9 @@ enum ChannelType {
   CHANNEL_TYPE_AUDIO = 4;          // Audio generation
   CHANNEL_TYPE_CUSTOM = 5;         // Custom data type
   CHANNEL_TYPE_CONTROL = 6;        // Control messages
+  CHANNEL_TYPE_TEXT_AUX = 7;       // Text auxiliary channel
+  CHANNEL_TYPE_IMAGE_AUX = 8;      // Image auxiliary channel
+  CHANNEL_TYPE_AUDIO_AUX = 9;      // Audio auxiliary channel
 }
 
 // Channel operation mode
