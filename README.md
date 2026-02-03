@@ -50,7 +50,7 @@ NMDB acts as a communication bus between the core neural network model and perip
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/nmdb.git
+git clone https://github.com/rand0mdevel0per/nmdb.git
 cd nmdb
 
 # Create build directory
