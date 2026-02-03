@@ -21,16 +21,26 @@ else()
 endif()
 
 # Find Protobuf (compatible with vcpkg)
-find_package(protobuf CONFIG QUIET)
-if(protobuf_FOUND)
-    # vcpkg CONFIG mode - use target-based linking
-    set(PROTOBUF_LIBRARIES protobuf::libprotobuf)
-    # Get protobuf_generate_cpp function
-    include(${Protobuf_DIR}/../../../share/protobuf/protobuf-generate.cmake OPTIONAL)
+# If already found by parent project, use it
+if(NOT protobuf_FOUND AND NOT Protobuf_FOUND)
+    find_package(protobuf CONFIG QUIET)
+    if(protobuf_FOUND)
+        # vcpkg CONFIG mode - use target-based linking
+        set(PROTOBUF_LIBRARIES protobuf::libprotobuf)
+        # Get protobuf_generate_cpp function
+        include(${Protobuf_DIR}/../../../share/protobuf/protobuf-generate.cmake OPTIONAL)
+    else()
+        # Standard MODULE mode
+        find_package(Protobuf REQUIRED)
+        set(PROTOBUF_LIBRARIES ${Protobuf_LIBRARIES})
+    endif()
 else()
-    # Standard MODULE mode
-    find_package(Protobuf REQUIRED)
-    set(PROTOBUF_LIBRARIES ${Protobuf_LIBRARIES})
+    # Use Protobuf found by parent project
+    if(protobuf_FOUND)
+        set(PROTOBUF_LIBRARIES protobuf::libprotobuf)
+    else()
+        set(PROTOBUF_LIBRARIES ${Protobuf_LIBRARIES})
+    endif()
 endif()
 
 include_directories(${Protobuf_INCLUDE_DIRS})
