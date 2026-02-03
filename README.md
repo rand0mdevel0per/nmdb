@@ -29,6 +29,14 @@
 
 NMDB acts as a communication bus between the core neural network model and peripheral modules, enabling real-time multi-modal interactions for AI-VTuber and other applications.
 
+## Documentation
+
+- **[Getting Started](docs/getting_started.md)** - Quick start guide with installation and basic examples
+- **[Architecture](docs/architecture.md)** - Detailed architecture and design documentation
+- **[API Reference](docs/api_reference.md)** - Complete C++ and Python API reference
+- **[Python Client Guide](docs/python_client.md)** - Comprehensive Python client usage guide
+- **[Windows Support](docs/windows_support.md)** - Windows-specific information and limitations
+
 ## Installation
 
 ### Prerequisites
