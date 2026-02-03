@@ -9,12 +9,12 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="nmdb-py",
-    version="0.1.0",
+    version="0.1.1",
     author="Sintellix Contributors",
     description="Python client library for Neural Message Data Bus (NMDB)",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/nmdb",
+    url="https://github.com/rand0mdevel0per/nmdb",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 3 - Alpha",
