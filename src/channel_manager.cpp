@@ -5,8 +5,15 @@
 
 #include "nmdb/channel_manager.hpp"
 #include <iostream>
+
+#ifdef _WIN32
+#include <direct.h>
+#include <io.h>
+#define mkdir(path, mode) _mkdir(path)
+#else
 #include <sys/stat.h>
 #include <sys/types.h>
+#endif
 
 namespace nmdb {
 

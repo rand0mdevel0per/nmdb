@@ -13,13 +13,26 @@ endif()
 
 # Compiler flags
 if(MSVC)
-    add_compile_options(/W4 /WX)
+    add_compile_options(/W4)
+    # Disable /WX (warnings as errors) due to Protobuf DLL interface warnings
+    # add_compile_options(/WX)
 else()
     add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 endif()
 
-# Find Protobuf
-find_package(Protobuf REQUIRED)
+# Find Protobuf (compatible with vcpkg)
+find_package(protobuf CONFIG QUIET)
+if(protobuf_FOUND)
+    # vcpkg CONFIG mode - use target-based linking
+    set(PROTOBUF_LIBRARIES protobuf::libprotobuf)
+    # Get protobuf_generate_cpp function
+    include(${Protobuf_DIR}/../../../share/protobuf/protobuf-generate.cmake OPTIONAL)
+else()
+    # Standard MODULE mode
+    find_package(Protobuf REQUIRED)
+    set(PROTOBUF_LIBRARIES ${Protobuf_LIBRARIES})
+endif()
+
 include_directories(${Protobuf_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
@@ -35,11 +48,15 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
 
 # NMDB library sources
 set(NMDB_SOURCES
-    src/socket_server.cpp
     src/channel_manager.cpp
     src/nmdb_channel_manager.cpp
     ${PROTO_SRCS}
 )
+
+# Add socket_server only on Unix-like systems
+if(UNIX)
+    list(APPEND NMDB_SOURCES src/socket_server.cpp)
+endif()
 
 # NMDB library headers
 set(NMDB_HEADERS
@@ -58,7 +75,12 @@ include_directories(
 
 # Create NMDB library
 add_library(nmdb SHARED ${NMDB_SOURCES} ${NMDB_HEADERS})
-target_link_libraries(nmdb ${Protobuf_LIBRARIES} pthread)
+
+# Link libraries
+target_link_libraries(nmdb ${PROTOBUF_LIBRARIES})
+if(UNIX)
+    target_link_libraries(nmdb pthread)
+endif()
 
 # Install rules
 install(TARGETS nmdb
