@@ -39,14 +39,26 @@ NMDB acts as a communication bus between the core neural network model and perip
 
 ## Installation
 
-### Prerequisites
+### Python Client
+
+Install the Python client library from PyPI:
+
+```bash
+pip install nmdb-py
+```
+
+For more details, see the [Python Client Guide](docs/python_client.md).
+
+### C++ Library
+
+#### Prerequisites
 
 - CMake 3.15 or higher
 - C++20 compatible compiler (GCC 10+, Clang 11+, MSVC 2019+)
 - Protocol Buffers 3.0 or higher
 - pthread (Linux/Unix)
 
-### Building from Source
+#### Building from Source
 
 ```bash
 # Clone the repository
@@ -64,7 +76,7 @@ cmake --build . --config Release
 sudo cmake --install .
 ```
 
-### Building with Examples
+#### Building with Examples
 
 ```bash
 cmake -DBUILD_EXAMPLES=ON ..
